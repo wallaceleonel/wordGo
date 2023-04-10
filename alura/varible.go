@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
+
+const monitoramentos = 3
+const delay = 5
 
 func main() {
 
@@ -41,6 +45,7 @@ func leComando() int {
 	var comandoLido int
 	fmt.Scan(&comandoLido)
 	fmt.Println("O comando escolhido foi", comandoLido)
+	fmt.Println("")
 	return comandoLido
 }
 
@@ -53,8 +58,28 @@ func exibeMenu() {
 
 func iniciarMonitoramento() {
 	fmt.Println("iniciando monitoramento.")
-	academiaProd := "https://playmove-ead-producao.azurewebsites.net/"
-	resonse, _ := http.Get(academiaProd)
-	fmt.Println(resonse)
+	var ambientesAcademia = []string{"https://playmove-ead-producao.azurewebsites.net/", "https://playmove-ead-stage.azurewebsites.net/"}
 
+	for i := 0; i < monitoramentos; i++ {
+
+		for i, site := range ambientesAcademia {
+			fmt.Println("testando ambiente", i, ":", site)
+			testaAmbiente(site)
+		}
+		time.Sleep(delay * time.Minute)
+		fmt.Println("")
+	}
+
+	fmt.Println("")
+
+}
+
+func testaAmbiente(ambientes string) {
+	resonse, _ := http.Get(ambientes)
+
+	if resonse.StatusCode == 200 {
+		fmt.Println("Ambiente", ambientes, "carregado com sucesso!")
+	} else {
+		fmt.Println("Sit", ambientes, "está fora do ar. status code", resonse.StatusCode)
+	}
 }
