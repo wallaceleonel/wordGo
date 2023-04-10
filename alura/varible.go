@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
@@ -14,7 +15,7 @@ func main() {
 	switch comando {
 
 	case 1:
-		fmt.Println("iniciando monitoramento.")
+		iniciarMonitoramento()
 	case 2:
 		fmt.Println("Carregando os logs da aplicação.")
 	case 0:
@@ -48,4 +49,12 @@ func exibeMenu() {
 	fmt.Println("1- Iniciar monitoramento")
 	fmt.Println("2- Exibir logs")
 	fmt.Println("0- Sair do programa")
+}
+
+func iniciarMonitoramento() {
+	fmt.Println("iniciando monitoramento.")
+	academiaProd := "https://playmove-ead-producao.azurewebsites.net/"
+	resonse, _ := http.Get(academiaProd)
+	fmt.Println(resonse)
+
 }
