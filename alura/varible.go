@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -82,4 +85,28 @@ func testaAmbiente(ambientes string) {
 	} else {
 		fmt.Println("Sit", ambientes, "está fora do ar. status code", resonse.StatusCode)
 	}
+}
+
+func leSitesDoArquivi() []string {
+	var sites []string
+	arquivo, error := os.Open("sites.txt")
+
+	if error != nil {
+		fmt.Println("Ocorreu um erro ", error)
+	}
+
+	leitor := bufio.NewReader(arquivo)
+	for {
+		linha, error := leitor.ReadString('\n')
+		linha = strings.TrimSpace(linha)
+
+		sites = append(sites, linha)
+
+		if error == io.EOF {
+			break
+		}
+
+	}
+	arquivo.Close()
+	return sites
 }
