@@ -19,12 +19,12 @@ func main() {
 	fmt.Println("O comando escolhido foi ", comando)
 
 	if comando == 1 {
-		println("iniciando monitoramento.")
+		fmt.Println("iniciando monitoramento.")
 	} else if comando == 2 {
-		println("Carregando os logs da aplicação.")
+		fmt.Println("Carregando os logs da aplicação.")
 	} else if comando == 0 {
-		println("Finalizando programa.")
+		fmt.Println("Finalizando programa.")
 	} else {
-		println("comando executado invalido.")
+		fmt.Println("comando executado invalido.")
 	}
 }
