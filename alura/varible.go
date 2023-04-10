@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -16,22 +18,27 @@ const delay = 5
 func main() {
 
 	exibeIntroducao()
-	exibeMenu()
-	comando := leComando()
+	leSitesDoArquivo()
 
-	switch comando {
+	for {
+		exibeMenu()
 
-	case 1:
-		iniciarMonitoramento()
-	case 2:
-		fmt.Println("Carregando os logs da aplicação.")
-	case 0:
-		fmt.Println("Finalizando programa.")
-		os.Exit(0)
+		comando := leComando()
 
-	default:
-		fmt.Println("comando executado invalido.")
-		os.Exit(-1)
+		switch comando {
+		case 1:
+			iniciarMonitoramento()
+		case 2:
+			fmt.Println("Exibindo Logs...")
+			imprimeLogs()
+		case 0:
+			fmt.Println("Finalizando programa.")
+			os.Exit(0)
+
+		default:
+			fmt.Println("comando executado invalido.")
+			os.Exit(-1)
+		}
 	}
 }
 
@@ -65,9 +72,9 @@ func iniciarMonitoramento() {
 
 	for i := 0; i < monitoramentos; i++ {
 
-		for i, site := range ambientesAcademia {
-			fmt.Println("testando ambiente", i, ":", site)
-			testaAmbiente(site)
+		for i, ambiente := range ambientesAcademia {
+			fmt.Println("testando ambiente", i, ":", ambiente)
+			testaAmbiente(ambiente)
 		}
 		time.Sleep(delay * time.Minute)
 		fmt.Println("")
@@ -77,17 +84,24 @@ func iniciarMonitoramento() {
 
 }
 
-func testaAmbiente(ambientes string) {
-	resonse, _ := http.Get(ambientes)
+func testaAmbiente(ambiente string) {
+	resonse, error := http.Get(ambiente)
+
+	if error != nil {
+		fmt.Println("Ocorreu um erro", error)
+	}
 
 	if resonse.StatusCode == 200 {
-		fmt.Println("Ambiente", ambientes, "carregado com sucesso!")
+		fmt.Println("Ambiente", ambiente, "carregado com sucesso!")
+		registraLog(ambiente, true)
+
 	} else {
-		fmt.Println("Sit", ambientes, "está fora do ar. status code", resonse.StatusCode)
+		fmt.Println("Sit", ambiente, "está fora do ar. status code", resonse.StatusCode)
+		registraLog(ambiente, false)
 	}
 }
 
-func leSitesDoArquivi() []string {
+func leSitesDoArquivo() []string {
 	var sites []string
 	arquivo, error := os.Open("sites.txt")
 
@@ -109,4 +123,30 @@ func leSitesDoArquivi() []string {
 	}
 	arquivo.Close()
 	return sites
+}
+
+func imprimeLogs() {
+
+	arquivo, error := ioutil.ReadFile("log.txt")
+
+	if error != nil {
+		fmt.Println(error)
+	}
+
+	fmt.Println(arquivo)
+}
+
+func registraLog(ambiente string, status bool) {
+
+	fmt.Println("Carregando os logs da aplicação.")
+
+	arquivo, error := os.OpenFile("log.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	if error != nil {
+		fmt.Println(error)
+	}
+
+	arquivo.WriteString((time.Now().Format("02/01/2006 15:04:05")) + "-" + ambiente + "- online: " + strconv.FormatBool(status) + "\n")
+
+	arquivo.Close()
 }
