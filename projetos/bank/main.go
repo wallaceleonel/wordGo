@@ -2,35 +2,40 @@ package main
 
 import "fmt"
 
-type contaCorrente struct {
+type ContaCorrente struct {
 	titular             string
 	numeroAgencia       int
 	numeroContaCorrente int
 	saldoConta          float64
 }
 
+func (c *ContaCorrente) Sacar(valorDoSaque float64) string {
+
+	validaSaque := valorDoSaque > 0 && valorDoSaque <= c.saldoConta
+	if validaSaque {
+		c.saldoConta -= valorDoSaque
+		return "Saque realizado com sucesso"
+	} else {
+		return " Saldo insuficiente"
+	}
+}
+
+func (c *ContaCorrente) Depositar(valorDoDeposito float64) string {
+	validaDeposito := valorDoDeposito > 0
+	if validaDeposito {
+		c.saldoConta += valorDoDeposito
+		return "Deposito realizado com sucesso"
+	} else {
+		return "Valor de deposito invalido"
+	}
+}
+
 func main() {
 
-	contaDoGoberto := contaCorrente{
-		titular:             "Goberto Fagundes",
-		numeroAgencia:       1313,
-		numeroContaCorrente: 12344566,
-		saldoConta:          12231.98}
-
-	contaDoGo := contaCorrente{
-		"Go",
-		1313,
-		1231344,
-		212.98}
-
-	var contaDoJones *contaCorrente
-	contaDoJones = new(contaCorrente)
+	contaDoJones := ContaCorrente{}
 	contaDoJones.titular = "Jones Manoel"
-	contaDoJones.numeroAgencia = 1313
-	contaDoJones.numeroContaCorrente = 21211212
-	contaDoJones.saldoConta = 131313.13
+	contaDoJones.saldoConta = 300.98
 
-	fmt.Println(*contaDoJones)
-	fmt.Println(contaDoGoberto)
-	fmt.Println(contaDoGo)
+	fmt.Println(contaDoJones.Depositar(150.44))
+	fmt.Println(contaDoJones.Sacar(100.98))
 }
