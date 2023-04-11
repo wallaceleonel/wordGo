@@ -2,6 +2,6 @@ package clientes
 
 type Titular struct {
 	Nome      string
-	Cpf       string
+	CPF       string
 	Profissao string
 }
