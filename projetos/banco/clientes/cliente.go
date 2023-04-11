@@ -1,3 +1,7 @@
 package clientes
 
-type
+type Titular struct {
+	Nome      string
+	Cpf       string
+	Profissao string
+}

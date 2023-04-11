@@ -1,9 +1,8 @@
 package main
 
 import (
-	"github.com/wordGo/projetos/banco/contas"
-
 	"fmt"
+	"projetos/banco/contas"
 )
 
 func main() {

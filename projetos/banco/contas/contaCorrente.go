@@ -1,7 +1,8 @@
-package account
+package contas
+import "projetos\banco\clientes"
 
 type ContaCorrente struct {
-	Titular             string
+	Titular             Titular
 	NumeroAgencia       int
 	NumeroContaCorrente int
 	SaldoConta          float64
