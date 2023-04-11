@@ -1,17 +1,18 @@
 package main
 
 import (
-	"C:\.git\wordGo\projetos\bank\account"
+	"github.com/wordGo/projetos/banco/contas"
+
 	"fmt"
 )
 
 func main() {
 
-	contaDoJones := account.ContaCorrente{}
+	contaDoJones := contas.ContaCorrente{}
 	contaDoJones.Titular = "Jones Manoel"
 	contaDoJones.SaldoConta = 600.98
 
-	contaDoManoel := account.ContaCorrente{}
+	contaDoManoel := contas.ContaCorrente{}
 	contaDoManoel.Titular = "Manoel Jones"
 	contaDoManoel.SaldoConta = 300.98
 
