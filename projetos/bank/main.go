@@ -9,24 +9,24 @@ type ContaCorrente struct {
 	saldoConta          float64
 }
 
-func (c *ContaCorrente) Sacar(valorDoSaque float64) string {
+func (c *ContaCorrente) Sacar(valorDoSaque float64) (string, float64) {
 
 	validaSaque := valorDoSaque > 0 && valorDoSaque <= c.saldoConta
 	if validaSaque {
 		c.saldoConta -= valorDoSaque
-		return "Saque realizado com sucesso"
+		return "Saque realizado com sucesso", c.saldoConta
 	} else {
-		return " Saldo insuficiente"
+		return " Saldo insuficiente", c.saldoConta
 	}
 }
 
-func (c *ContaCorrente) Depositar(valorDoDeposito float64) string {
+func (c *ContaCorrente) Depositar(valorDoDeposito float64) (string, float64) {
 	validaDeposito := valorDoDeposito > 0
 	if validaDeposito {
 		c.saldoConta += valorDoDeposito
-		return "Deposito realizado com sucesso"
+		return "Deposito realizado com sucesso", c.saldoConta
 	} else {
-		return "Valor de deposito invalido"
+		return "Valor de deposito invalido", c.saldoConta
 	}
 }
 
