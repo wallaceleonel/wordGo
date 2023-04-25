@@ -128,7 +128,6 @@ func leSitesDoArquivo() []string {
 func imprimeLogs() {
 
 	arquivo, error := ioutil.ReadFile("log.txt")
-
 	if error != nil {
 		fmt.Println(error)
 	}
