@@ -12,7 +12,7 @@ type carro struct {
 
 var estacionamento = make(map[string]carro)
 
-const taxaHora = 10.0
+const taxaHora = 14.0
 
 func entrada(placa string) {
 	if _, ok := estacionamento[placa]; ok {
